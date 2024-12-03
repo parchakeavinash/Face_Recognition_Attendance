@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition Attendance</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container text-center mt-5">
+        <h1>Face Recognition Attendance</h1>
+        <button class="btn btn-primary mt-3" id="captureBtn">Capture & Log Attendance</button>
+        <button class="btn btn-secondary mt-3" onclick="window.location.href='/attendance'">View Attendance Log</button>
+        <div id="message" class="mt-3"></div>
+    </div>
+
+    <script>
+        document.getElementById('captureBtn').addEventListener('click', () => {
+            fetch('/capture', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    const messageDiv = document.getElementById('message');
+                    if (data.status === 'success') {
+                        messageDiv.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+                    } else {
+                        messageDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</body>
+</html>
